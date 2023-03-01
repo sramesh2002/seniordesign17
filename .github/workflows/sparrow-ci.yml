@@ -1,0 +1,26 @@
+name: Sparrow CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate_code: # job id
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        id: checkout
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GIT_PAT }}
+          submodules: true
+
+      - name: Build Sparrow Lora Only in Container
+        id: sparrow-lora-only
+        uses: ./.github/actions/sparrow-lora-only
+
+      - name: Build in Container
+        id: build
+        uses: ./.github/actions/build
